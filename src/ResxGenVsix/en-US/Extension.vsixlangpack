@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageLanguagePackManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+	<Metadata>
+		<DisplayName>Automatic Localization Resource File Generator</DisplayName>
+		<Description xml:space="preserve">A Visual Studio extension that automatically generates localization resource files (.resx) based on the code for easy internationalization.</Description>
+		<Icon>Resources\ResxGenCommandPackage.ico</Icon>
+	</Metadata>
+</PackageLanguagePackManifest>

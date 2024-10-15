@@ -1,0 +1,12 @@
+﻿@page "/counter"
+@rendermode InteractiveAuto
+
+<PageTitle>@stringLocalizer["Counter"]</PageTitle>
+
+<h1>@stringLocalizer["Counter"]</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">@L["Click me"]</button>
+
+

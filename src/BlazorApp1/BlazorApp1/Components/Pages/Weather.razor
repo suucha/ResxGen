@@ -1,0 +1,39 @@
+﻿@page "/weather"
+@attribute [StreamRendering]
+
+<PageTitle>@StringLocalizer["Weather"]</PageTitle>
+
+<h1>@StringLocalizer["Weather"]</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (forecasts == null)
+{
+    <p><em>@L["Loading..."]</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@StringLocalizer["Date"]</th>
+                <th>@StringLocalizer["Temp. (C)"]</th>
+                <th>@StringLocalizer["Temp. (F)"]</th>
+                <th>@StringLocalizer["Summary"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

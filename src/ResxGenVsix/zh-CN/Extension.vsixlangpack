@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageLanguagePackManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+	<Metadata>
+		<DisplayName>本地化资源文件自动生成器</DisplayName>
+		<Description xml:space="preserve">一个Visual Studio扩展，通过代码自动生成本地化资源文件（.resx），简化应用程序的国际化过程。</Description>
+		<Icon>Resources\ResxGenCommandPackage.ico</Icon>
+	</Metadata>
+</PackageLanguagePackManifest>
