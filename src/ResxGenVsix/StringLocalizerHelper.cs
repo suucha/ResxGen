@@ -32,7 +32,7 @@ namespace ResxGenVsix
                 // Find name maps using different methods
                 var nameMap1 = FindNameMapByPropertyAndField(root, semanticModel);
                 var nameMap2 = FindNameMapByCreateMethod(compilation, tree, root, semanticModel);
-                
+                var nameMap3 = FindNameMapByPrimaryConstructor(root, semanticModel);
                 // Merge name maps
                 foreach (var name in nameMap2)
                 {
@@ -41,7 +41,13 @@ namespace ResxGenVsix
                         nameMap1.Add(name.Key, name.Value);
                     }
                 }
-                
+                foreach (var name in nameMap3)
+                {
+                    if (!nameMap1.ContainsKey(name.Key))
+                    {
+                        nameMap1.Add(name.Key, name.Value);
+                    }
+                }
                 // Find resource keys and add them to allKeys
                 var keys = FindResourceKey(tree, root, nameMap1, semanticModel);
                 foreach (var key in keys)
@@ -478,6 +484,48 @@ namespace ResxGenVsix
                 }
             }
             return Path.Combine(resourcePath, dirs[dirs.Length - 1]);
+        }
+
+        private static Dictionary<string, string> FindNameMapByPrimaryConstructor(SyntaxNode root, SemanticModel semanticModel)
+        {
+            var nameMaps = new Dictionary<string, string>();
+            
+            // 查找所有类声明
+            var classes = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
+            
+            foreach (var cls in classes)
+            {
+                // 只检查主构造函数参数
+                if (cls.ParameterList != null)
+                {
+                    var localizerParameter = cls.ParameterList.Parameters
+                        .FirstOrDefault(p => IsStringLocalizerType(p.Type));
+                        
+                    if (localizerParameter != null)
+                    {
+                        // 获取类的完整名称
+                        var classSymbol = semanticModel.GetDeclaredSymbol(cls) as INamedTypeSymbol;
+                        var className = classSymbol?.ToDisplayString();
+                        
+                        if (!string.IsNullOrEmpty(className))
+                        {
+                            // 添加到映射字典中
+                            nameMaps[localizerParameter.Identifier.Text] = className;
+                        }
+                    }
+                }
+            }
+            
+            return nameMaps;
+        }
+
+        private static bool IsStringLocalizerType(TypeSyntax type)
+        {
+            var typeString = type.ToString();
+            return typeString == "IStringLocalizer" 
+                || typeString == "IHtmlLocalizer"
+                || typeString.StartsWith("IStringLocalizer<")
+                || typeString.StartsWith("IHtmlLocalizer<");
         }
     }
 }
